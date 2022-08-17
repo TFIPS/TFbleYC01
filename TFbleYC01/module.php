@@ -77,8 +77,9 @@ class TFbleYC01 extends IPSModule{
 		$temp_ID		= $this->RegisterVariableFloat("temp", "Temperatur", "~Temperature", 6);
 		$batt_ID		= $this->RegisterVariableInteger("batt", "Batterie", "~Battery.100", 7);
 		$backlight_ID	= $this->RegisterVariableBoolean("backlight", "Display-Beleuchtung", "~Switch", 8);
-		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 9);
-		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 10);
+		$holdReading_ID	= $this->RegisterVariableBoolean("holdReading", "Lesen angehalten", "~Switch", 9);
+		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 10);
+		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 11);
 
 		$deviceState_ID	= $this->RegisterVariableInteger("deviceState", "Status", "TFbleGW.deviceState", 95);
 		$uptime_ID		= $this->RegisterVariableString("uptime", "Uptime", "", 96);
@@ -155,6 +156,7 @@ class TFbleYC01 extends IPSModule{
 						$valueData["orp"] != $this->GetValue("orp") ? $this->SetValue("orp", $valueData["orp"]) : 1;
 						$valueData["temp"] != $this->GetValue("temp") ? $this->SetValue("temp", $valueData["temp"]) : 1;
 						$valueData["battery"] != $this->GetValue("batt") ? $this->SetValue("batt", $valueData["battery"]) : 1;
+						$valueData["holdReading"] != $this->GetValue("holdReading") ? $this->SetValue("holdReading", $valueData["holdReading"]) : 1;
 						$valueData["backlight"] != $this->GetValue("backlight") ? $this->SetValue("backlight", $valueData["backlight"]) : 1;
 						$this->SetValue("lastData", time());
 					break;
