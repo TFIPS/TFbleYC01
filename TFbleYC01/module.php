@@ -87,6 +87,7 @@ class TFbleYC01 extends IPSModule{
 		$ipAdress_ID	= $this->RegisterVariableString("ipAddress", "IP-Adresse", "", 98);
 		$wlanSignal_ID	= $this->RegisterVariableInteger("wlanSignal", "WLAN-Signal", "~Intensity.100", 99);
 		// Icons
+		IPS_SetIcon($holdReading_ID, "Sleep");
 		IPS_SetIcon($lastData_ID, "Link");
 		IPS_SetIcon($uptime_ID, "Hourglass");
 		IPS_SetIcon($fVersion_ID, "Calendar");
