@@ -1,0 +1,10 @@
+{
+	"elements":
+	[
+	],
+	"actions":
+	[
+		{ "type": "Button", "label": "Daten abrufen", "onClick": "TFYC_GetData($id);" },
+		{ "type": "Button", "label": "Neustart des Gateway", "onClick": "TFYC_RebootGw($id);" }
+	]
+}
