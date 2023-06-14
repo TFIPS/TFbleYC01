@@ -24,7 +24,7 @@ class TFbleYC01 extends IPSModule
 			IPS_SetVariableProfileIcon ('TFYC.cl', 'Speedo');
 			IPS_SetVariableProfileText('TFYC.cl', '', ' mg/L');
 			IPS_SetVariableProfileDigits('TFYC.cl', 1); 
-			IPS_SetVariableProfileValues('TFYC.cl', 0, 4, 1);
+			IPS_SetVariableProfileValues('TFYC.cl', 0, 4, 0.1);
 			IPS_SetVariableProfileAssociation('TFYC.cl', 0, 'niedrig %.2f', 'Warning', 0x0000FF);
 			IPS_SetVariableProfileAssociation('TFYC.cl', 0.5, '%.2f', '', 0x00FF00);
 			IPS_SetVariableProfileAssociation('TFYC.cl', 1.3, 'hoch %.2f', 'Warning', 0xFF0000);
