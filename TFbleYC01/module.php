@@ -1,41 +1,14 @@
 <?php
-class TFbleYC01 extends IPSModule{
+class TFbleYC01 extends IPSModule
+{
     
-    public function Create(){
+    public function Create()
+	{
         parent::Create();
-        //$this->RegisterPropertyString("deviceTopic", "");
         $this->ConnectParent("{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}");
 
-		if (!IPS_VariableProfileExists('TFYC.ec')) {
-            IPS_CreateVariableProfile('TFYC.ec', 1);
-			IPS_SetVariableProfileIcon ('TFYC.ec', 'Electricity');
-			IPS_SetVariableProfileText('TFYC.ec', '', ' µS/cm');
-			IPS_SetVariableProfileValues('TFYC.ec', 0, 10000, 10);
-			IPS_SetVariableProfileAssociation('TFYC.ec', 0, 'niedrig %d', 'Warning', 0x0000FF);
-			IPS_SetVariableProfileAssociation('TFYC.ec', 5400, '%d', '', 0x00FF00);
-			IPS_SetVariableProfileAssociation('TFYC.ec', 6810, 'hoch %d', 'Warning', 0xFF0000);
-		}
-		if (!IPS_VariableProfileExists('TFYC.tds')) {
-            IPS_CreateVariableProfile('TFYC.tds', 1);
-			IPS_SetVariableProfileIcon ('TFYC.tds', 'Snow');
-			IPS_SetVariableProfileText('TFYC.tds', '', ' ppm');
-			IPS_SetVariableProfileDigits('TFYC.tds', 0); 
-			IPS_SetVariableProfileValues('TFYC.tds', 0, 5000, 10);
-			IPS_SetVariableProfileAssociation('TFYC.tds', 0, 'niedrig %d', 'Warning', 0x0000FF);
-			IPS_SetVariableProfileAssociation('TFYC.tds', 250, '%d', '', 0x00FF00);
-			IPS_SetVariableProfileAssociation('TFYC.tds', 2000, 'hoch %d', 'Warning', 0xFF0000);
-		}
-        if (!IPS_VariableProfileExists('TFYC.saltTds')) {
-            IPS_CreateVariableProfile('TFYC.saltTds', 1);
-			IPS_SetVariableProfileIcon ('TFYC.saltTds', 'Snow');
-			IPS_SetVariableProfileText('TFYC.saltTds', '', ' ppm'); 
-			IPS_SetVariableProfileValues('TFYC.saltTds', 0, 10000, 10);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 0, 'niedrig %d', 'Warning', 0x0000FF);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 2500, '%d', '', 0x00FF00);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 3500, 'hoch %d', 'Warning', 0xFF0000);
-		}
-
-		if (!IPS_VariableProfileExists('TFYC.ph')) {
+		if (!IPS_VariableProfileExists('TFYC.ph')) 
+		{
             IPS_CreateVariableProfile('TFYC.ph', 2);
 			IPS_SetVariableProfileIcon ('TFYC.ph', 'Gauge');
 			IPS_SetVariableProfileDigits('TFYC.ph', 1); 
@@ -45,7 +18,52 @@ class TFbleYC01 extends IPSModule{
 			IPS_SetVariableProfileAssociation('TFYC.ph', 7.4, 'alkalisch %.2f', 'Warning', 0x0000FF);
 		}
 
-		if (!IPS_VariableProfileExists('TFYC.orp')) {
+		if (!IPS_VariableProfileExists('TFYC.cl')) 
+		{
+            IPS_CreateVariableProfile('TFYC.cl', 2);
+			IPS_SetVariableProfileIcon ('TFYC.cl', 'Speedo');
+			IPS_SetVariableProfileText('TFYC.cl', '', ' mg/L');
+			IPS_SetVariableProfileDigits('TFYC.cl', 1); 
+			IPS_SetVariableProfileValues('TFYC.cl', 0, 4, 1);
+			IPS_SetVariableProfileAssociation('TFYC.cl', 0, 'niedrig %.2f', 'Warning', 0x0000FF);
+			IPS_SetVariableProfileAssociation('TFYC.cl', 0.5, '%.2f', '', 0x00FF00);
+			IPS_SetVariableProfileAssociation('TFYC.cl', 1.3, 'hoch %.2f', 'Warning', 0xFF0000);
+		}
+
+		if (!IPS_VariableProfileExists('TFYC.ec')) 
+		{
+            IPS_CreateVariableProfile('TFYC.ec', 1);
+			IPS_SetVariableProfileIcon ('TFYC.ec', 'Electricity');
+			IPS_SetVariableProfileText('TFYC.ec', '', ' µS/cm');
+			IPS_SetVariableProfileValues('TFYC.ec', 0, 10000, 10);
+			IPS_SetVariableProfileAssociation('TFYC.ec', 0, 'niedrig %d', 'Warning', 0x0000FF);
+			IPS_SetVariableProfileAssociation('TFYC.ec', 5400, '%d', '', 0x00FF00);
+			IPS_SetVariableProfileAssociation('TFYC.ec', 6810, 'hoch %d', 'Warning', 0xFF0000);
+		}
+		if (!IPS_VariableProfileExists('TFYC.tds')) 
+		{
+            IPS_CreateVariableProfile('TFYC.tds', 1);
+			IPS_SetVariableProfileIcon ('TFYC.tds', 'Snow');
+			IPS_SetVariableProfileText('TFYC.tds', '', ' ppm');
+			IPS_SetVariableProfileDigits('TFYC.tds', 0); 
+			IPS_SetVariableProfileValues('TFYC.tds', 0, 5000, 10);
+			IPS_SetVariableProfileAssociation('TFYC.tds', 0, 'niedrig %d', 'Warning', 0x0000FF);
+			IPS_SetVariableProfileAssociation('TFYC.tds', 250, '%d', '', 0x00FF00);
+			IPS_SetVariableProfileAssociation('TFYC.tds', 2000, 'hoch %d', 'Warning', 0xFF0000);
+		}
+        if (!IPS_VariableProfileExists('TFYC.saltTds')) 
+		{
+            IPS_CreateVariableProfile('TFYC.saltTds', 1);
+			IPS_SetVariableProfileIcon ('TFYC.saltTds', 'Snow');
+			IPS_SetVariableProfileText('TFYC.saltTds', '', ' ppm'); 
+			IPS_SetVariableProfileValues('TFYC.saltTds', 0, 10000, 10);
+			IPS_SetVariableProfileAssociation('TFYC.saltTds', 0, 'niedrig %d', 'Warning', 0x0000FF);
+			IPS_SetVariableProfileAssociation('TFYC.saltTds', 2500, '%d', '', 0x00FF00);
+			IPS_SetVariableProfileAssociation('TFYC.saltTds', 3500, 'hoch %d', 'Warning', 0xFF0000);
+		}
+
+		if (!IPS_VariableProfileExists('TFYC.orp')) 
+		{
             IPS_CreateVariableProfile('TFYC.orp', 1);
 			IPS_SetVariableProfileIcon ('TFYC.orp', 'DoctorBag');
 			IPS_SetVariableProfileText('TFYC.orp', '', ' mV');
@@ -55,7 +73,8 @@ class TFbleYC01 extends IPSModule{
 			IPS_SetVariableProfileAssociation('TFYC.orp', 750, 'hoch %d', 'Warning', 0xFF0000);
 		}
 
-		if (!IPS_VariableProfileExists('TFbleGW.deviceState')) {
+		if (!IPS_VariableProfileExists('TFbleGW.deviceState')) 
+		{
             IPS_CreateVariableProfile('TFbleGW.deviceState', 1);
 			IPS_SetVariableProfileIcon ('TFbleGW.deviceState', 'Network');
 			IPS_SetVariableProfileAssociation('TFbleGW.deviceState', 0, 'Blockiert', 'Warning', 0xFF0000);
@@ -67,19 +86,21 @@ class TFbleYC01 extends IPSModule{
 		}
     }
     
-    public function ApplyChanges(){
+    public function ApplyChanges()
+	{
         parent::ApplyChanges();
 		$ph_ID			= $this->RegisterVariableFloat("ph", "pH", "TFYC.ph", 1);
-		$ec_ID			= $this->RegisterVariableInteger("ec", "Leitwert (EC)", "TFYC.ec", 2);
-		$tds_ID			= $this->RegisterVariableInteger("tds", "Feststoffe (TDS)", "TFYC.tds", 3);
-		$saltTds_ID		= $this->RegisterVariableInteger("saltTds", "Salzgehalt", "TFYC.saltTds", 4);
-		$orp_ID			= $this->RegisterVariableInteger("orp", "Redoxpotenzial", "TFYC.orp", 5);
-		$temp_ID		= $this->RegisterVariableFloat("temp", "Temperatur", "~Temperature", 6);
-		$batt_ID		= $this->RegisterVariableInteger("batt", "Batterie", "~Battery.100", 7);
-		$backlight_ID	= $this->RegisterVariableBoolean("backlight", "Display-Beleuchtung", "~Switch", 8);
-		$holdReading_ID	= $this->RegisterVariableBoolean("holdReading", "Lesen angehalten", "~Switch", 9);
-		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 10);
-		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 11);
+		$cl_ID			= $this->RegisterVariableFloat("cl", "Chlorgehalt", "TFYC.cl", 2);
+		$ec_ID			= $this->RegisterVariableInteger("ec", "Leitwert (EC)", "TFYC.ec", 3);
+		$tds_ID			= $this->RegisterVariableInteger("tds", "Feststoffe (TDS)", "TFYC.tds", 4);
+		$saltTds_ID		= $this->RegisterVariableInteger("saltTds", "Salzgehalt", "TFYC.saltTds", 5);
+		$orp_ID			= $this->RegisterVariableInteger("orp", "Redoxpotenzial", "TFYC.orp", 6);
+		$temp_ID		= $this->RegisterVariableFloat("temp", "Temperatur", "~Temperature", 7);
+		$batt_ID		= $this->RegisterVariableInteger("batt", "Batterie", "~Battery.100", 8);
+		$backlight_ID	= $this->RegisterVariableBoolean("backlight", "Display-Beleuchtung", "~Switch", 9);
+		$holdReading_ID	= $this->RegisterVariableBoolean("holdReading", "Lesen angehalten", "~Switch", 10);
+		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 11);
+		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 12);
 
 		$io1_ID			= $this->RegisterVariableInteger("io1", "IO1", "", 20);
 		$io2_ID			= $this->RegisterVariableInteger("io2", "IO2", "", 21);
@@ -116,7 +137,7 @@ class TFbleYC01 extends IPSModule{
 
 	public function MessageSink($time, $sender, $message, $data) 
 	{
-		IPS_LogMessage("MessageSink", "Message from SenderID ".$senderID." with Message ".$message."\r\n Data: ".print_r($data, true));
+		// IPS_LogMessage("MessageSink", "Message from SenderID ".$senderID." with Message ".$message."\r\n Data: ".print_r($data, true));
 		$getData_ID = IPS_GetObjectIDByIdent("getData", $this->InstanceID);		
 	}
 
@@ -169,6 +190,7 @@ class TFbleYC01 extends IPSModule{
 						$valueData["saltTds"] != $this->GetValue("saltTds") ? $this->SetValue("saltTds", $valueData["saltTds"]) : 1;
 						$valueData["ph"] != $this->GetValue("ph") ? $this->SetValue("ph", $valueData["ph"]) : 1;
 						$valueData["orp"] != $this->GetValue("orp") ? $this->SetValue("orp", $valueData["orp"]) : 1;
+						$valueData["cl"] != $this->GetValue("cl") ? $this->SetValue("cl", $valueData["cl"]) : 1;
 						$valueData["temp"] != $this->GetValue("temp") ? $this->SetValue("temp", $valueData["temp"]) : 1;
 						$valueData["battery"] != $this->GetValue("batt") ? $this->SetValue("batt", $valueData["battery"]) : 1;
 						$valueData["holdReading"] != $this->GetValue("holdReading") ? $this->SetValue("holdReading", $valueData["holdReading"]) : 1;
@@ -195,7 +217,8 @@ class TFbleYC01 extends IPSModule{
         $this->SendDataToParent($dataJSON);
 	}
 	
-	public function RequestAction($ident, $value) {
+	public function RequestAction($ident, $value) 
+	{
 		switch($ident)
 		{
 			case "getData" :
@@ -208,4 +231,3 @@ class TFbleYC01 extends IPSModule{
 		}
 	}
 }
-?>
