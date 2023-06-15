@@ -51,16 +51,6 @@ class TFbleYC01 extends IPSModule
 			IPS_SetVariableProfileAssociation('TFYC.tds', 250, '%d', '', 0x00FF00);
 			IPS_SetVariableProfileAssociation('TFYC.tds', 2000, 'hoch %d', 'Warning', 0xFF0000);
 		}
-        if (!IPS_VariableProfileExists('TFYC.saltTds')) 
-		{
-            IPS_CreateVariableProfile('TFYC.saltTds', 1);
-			IPS_SetVariableProfileIcon ('TFYC.saltTds', 'Snow');
-			IPS_SetVariableProfileText('TFYC.saltTds', '', ' ppm'); 
-			IPS_SetVariableProfileValues('TFYC.saltTds', 0, 10000, 10);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 0, 'niedrig %d', 'Warning', 0x0000FF);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 2500, '%d', '', 0x00FF00);
-			IPS_SetVariableProfileAssociation('TFYC.saltTds', 3500, 'hoch %d', 'Warning', 0xFF0000);
-		}
 
 		if (!IPS_VariableProfileExists('TFYC.orp')) 
 		{
@@ -93,14 +83,13 @@ class TFbleYC01 extends IPSModule
 		$cl_ID			= $this->RegisterVariableFloat("cl", "Chlorgehalt", "TFYC.cl", 2);
 		$ec_ID			= $this->RegisterVariableInteger("ec", "Leitwert (EC)", "TFYC.ec", 3);
 		$tds_ID			= $this->RegisterVariableInteger("tds", "Feststoffe (TDS)", "TFYC.tds", 4);
-		$saltTds_ID		= $this->RegisterVariableInteger("saltTds", "Salzgehalt", "TFYC.saltTds", 5);
-		$orp_ID			= $this->RegisterVariableInteger("orp", "Redoxpotenzial", "TFYC.orp", 6);
-		$temp_ID		= $this->RegisterVariableFloat("temp", "Temperatur", "~Temperature", 7);
-		$batt_ID		= $this->RegisterVariableInteger("batt", "Batterie", "~Battery.100", 8);
-		$backlight_ID	= $this->RegisterVariableBoolean("backlight", "Display-Beleuchtung", "~Switch", 9);
-		$holdReading_ID	= $this->RegisterVariableBoolean("holdReading", "Lesen angehalten", "~Switch", 10);
-		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 11);
-		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 12);
+		$orp_ID			= $this->RegisterVariableInteger("orp", "Redoxpotenzial", "TFYC.orp", 5);
+		$temp_ID		= $this->RegisterVariableFloat("temp", "Temperatur", "~Temperature", 6);
+		$batt_ID		= $this->RegisterVariableInteger("battery", "Batterie", "~Battery.100", 7);
+		$backlight_ID	= $this->RegisterVariableBoolean("backlight", "Display-Beleuchtung", "~Switch", 8);
+		$holdReading_ID	= $this->RegisterVariableBoolean("holdReading", "Lesen angehalten", "~Switch", 9);
+		$getData_ID		= $this->RegisterVariableBoolean("getData", "Daten abrufen", "~Switch", 10);
+		$lastData_ID	= $this->RegisterVariableInteger("lastData", "Letzter Abruf", "~UnixTimestamp", 11);
 
 		$io1_ID			= $this->RegisterVariableInteger("io1", "IO1", "", 20);
 		$io2_ID			= $this->RegisterVariableInteger("io2", "IO2", "", 21);
@@ -166,7 +155,7 @@ class TFbleYC01 extends IPSModule
 				switch($topic[1])
 				{
 					// STATE
-					case "state" 		:
+					case "state" :
 						switch($valueData["deviceState"])
 						{
 							case 'ban' 			: $deviceState = 0; break;
@@ -176,29 +165,39 @@ class TFbleYC01 extends IPSModule
 							case 'ready'		: $deviceState = 4; break;
 							case 'active'		: $deviceState = 5; break;
 						}
-						$deviceState != $this->GetValue("deviceState") ? $this->SetValue("deviceState", $deviceState) : 1;
+						if(array_key_exists('deviceState', $valueData))
+						{
+							$this->SetValue("deviceState", $deviceState);
+						}
 
-						$valueData["fVersion"] != $this->GetValue("fVersion") ? $this->SetValue("fVersion", $valueData["fVersion"]) : 1;
-						$valueData["ipAddress"] != $this->GetValue("ipAddress") ? $this->SetValue("ipAddress", $valueData["ipAddress"]) : 1;
-						$valueData["wlanSignal"] != $this->GetValue("wlanSignal") ? $this->SetValue("wlanSignal", $valueData["wlanSignal"]) : 1;
-						$valueData["uptime"] != $this->GetValue("uptime") ? $this->SetValue("uptime", $valueData["uptime"]) : 1;
+						array_key_exists('fVersion', $valueData) ? $this->SetValue("fVersion", $valueData["fVersion"]) : 1;
+						array_key_exists('ipAddress', $valueData) ? $this->SetValue("ipAddress", $valueData["ipAddress"]) : 1;
+						array_key_exists('wlanSignal', $valueData) ? $this->SetValue("wlanSignal", $valueData["wlanSignal"]) : 1;
+						array_key_exists('uptime', $valueData) ? $this->SetValue("uptime", $valueData["uptime"]) : 1;
 					break;
 					// BLE-YC01 Data
-					case "bleYc01Data" 		:
-						$valueData["ec"] != $this->GetValue("ec") ? $this->SetValue("ec", $valueData["ec"]) : 1;
-						$valueData["tds"] != $this->GetValue("tds") ? $this->SetValue("tds", $valueData["tds"]) : 1;
-						$valueData["saltTds"] != $this->GetValue("saltTds") ? $this->SetValue("saltTds", $valueData["saltTds"]) : 1;
-						$valueData["ph"] != $this->GetValue("ph") ? $this->SetValue("ph", $valueData["ph"]) : 1;
-						$valueData["orp"] != $this->GetValue("orp") ? $this->SetValue("orp", $valueData["orp"]) : 1;
-						$valueData["cl"] != $this->GetValue("cl") ? $this->SetValue("cl", $valueData["cl"]) : 1;
-						$valueData["temp"] != $this->GetValue("temp") ? $this->SetValue("temp", $valueData["temp"]) : 1;
-						$valueData["battery"] != $this->GetValue("batt") ? $this->SetValue("batt", $valueData["battery"]) : 1;
-						$valueData["holdReading"] != $this->GetValue("holdReading") ? $this->SetValue("holdReading", $valueData["holdReading"]) : 1;
-						$valueData["backlight"] != $this->GetValue("backlight") ? $this->SetValue("backlight", $valueData["backlight"]) : 1;
+					case "bleYc01Data" :
+						// OLDBUG change ident batt to battery
+						if($battID = @IPS_GetObjectIDByIdent("batt", $this->InstanceID))
+						{
+							if($battID > 0)
+							{
+								IPS_SetIdent($battID, "battery");
+							}
+						}
+						array_key_exists('ec', $valueData) ? $this->SetValue("ec", $valueData["ec"]) : 1;
+						array_key_exists('tds', $valueData) ? $this->SetValue("tds", $valueData["tds"]) : 1;
+						array_key_exists('ph', $valueData) ? $this->SetValue("ph", $valueData["ph"]) : 1;
+						array_key_exists('orp', $valueData) ? $this->SetValue("orp", $valueData["orp"]) : 1;
+						array_key_exists('cl', $valueData) ? $this->SetValue("cl", $valueData["cl"]) : 1;
+						array_key_exists('temp', $valueData) ? $this->SetValue("temp", $valueData["temp"]) : 1;
+						array_key_exists('battery', $valueData) ? $this->SetValue("battery", $valueData["battery"]) : 1;
+						array_key_exists('holdReading', $valueData) ? $this->SetValue("holdReading", $valueData["holdReading"]) : 1;
+						array_key_exists('backlight', $valueData) ? $this->SetValue("backlight", $valueData["backlight"]) : 1;
 						$this->SetValue("lastData", time());
 					break;
-					case "ioData" 		:
-						$valueData["id"] != $this->GetValue("io".$valueData["id"]) ? $this->SetValue("io".$valueData["id"], $valueData["value"]) : 1;
+					case "ioData" :
+						array_key_exists('id', $valueData) ? $this->SetValue("io".$valueData["id"], $valueData["value"]) : 1;
 					break;
 				}
 			}
