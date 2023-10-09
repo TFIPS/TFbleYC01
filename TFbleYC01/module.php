@@ -176,7 +176,7 @@ class TFbleYC01 extends IPSModule
 						array_key_exists('uptime', $valueData) ? $this->SetValue("uptime", $valueData["uptime"]) : 1;
 					break;
 					// BLE-YC01 Data
-					case "bleYc01Data" :
+					case "bleYcValues" :
 						// OLDBUG change ident batt to battery
 						if($battID = @IPS_GetObjectIDByIdent("batt", $this->InstanceID))
 						{
