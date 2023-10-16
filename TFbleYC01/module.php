@@ -7,6 +7,8 @@ class TFbleYC01 extends IPSModule
         parent::Create();
         $this->ConnectParent("{C6D2AEB3-6E1F-4B2E-8E69-3A1A00246850}");
 
+		$this->RegisterPropertyString("deviceTopic", "tfblegw");
+
 		if (!IPS_VariableProfileExists('TFYC.ph')) 
 		{
             IPS_CreateVariableProfile('TFYC.ph', 2);
@@ -98,17 +100,17 @@ class TFbleYC01 extends IPSModule
 		$io5_ID			= $this->RegisterVariableInteger("io5", "IO5", "", 24);
 		$io6_ID			= $this->RegisterVariableInteger("io6", "IO6", "", 25);		
 
-		$deviceState_ID	= $this->RegisterVariableInteger("deviceState", "Status", "TFbleGW.deviceState", 95);
-		$uptime_ID		= $this->RegisterVariableString("uptime", "Uptime", "", 96);
-		$fVersion_ID	= $this->RegisterVariableString("fVersion", "Version", "", 97);
-		$ipAdress_ID	= $this->RegisterVariableString("ipAddress", "IP-Adresse", "", 98);
-		$wlanSignal_ID	= $this->RegisterVariableInteger("wlanSignal", "WLAN-Signal", "~Intensity.100", 99);
+		#$deviceState_ID	= $this->RegisterVariableInteger("deviceState", "Status", "TFbleGW.deviceState", 95);
+		#$uptime_ID		= $this->RegisterVariableString("uptime", "Uptime", "", 96);
+		#$fVersion_ID	= $this->RegisterVariableString("fVersion", "Version", "", 97);
+		#$ipAdress_ID	= $this->RegisterVariableString("ipAddress", "IP-Adresse", "", 98);
+		#$wlanSignal_ID	= $this->RegisterVariableInteger("wlanSignal", "WLAN-Signal", "~Intensity.100", 99);
 		// Icons
-		IPS_SetIcon($holdReading_ID, "Sleep");
-		IPS_SetIcon($lastData_ID, "Link");
-		IPS_SetIcon($uptime_ID, "Hourglass");
-		IPS_SetIcon($fVersion_ID, "Calendar");
-		IPS_SetIcon($ipAdress_ID, "Network");
+		#IPS_SetIcon($holdReading_ID, "Sleep");
+		#IPS_SetIcon($lastData_ID, "Link");
+		#IPS_SetIcon($uptime_ID, "Hourglass");
+		#IPS_SetIcon($fVersion_ID, "Calendar");
+		#IPS_SetIcon($ipAdress_ID, "Network");
 
 		IPS_SetIcon($io1_ID, "Move");
 		IPS_SetIcon($io2_ID, "Move");
@@ -118,7 +120,7 @@ class TFbleYC01 extends IPSModule
 		IPS_SetIcon($io6_ID, "Move");
 
 		// State default
-		SetValueInteger($deviceState_ID, 1);
+		#SetValueInteger($deviceState_ID, 1);
 		// Actions
 		$this->EnableAction("getData");
     }
@@ -146,7 +148,7 @@ class TFbleYC01 extends IPSModule
 		$data = json_decode($JSONString, true);
 		if($data['DataID'] == '{7F7632D9-FA40-4F38-8DEA-C83CD4325A32}')
 		{
-			$deviceTopic	= "tfblegw";
+			$deviceTopic	= $this->ReadPropertyString("deviceTopic");
 			$topic			= explode('/', $data['Topic']);
 			
 			if($topic[0] == $deviceTopic)
@@ -170,10 +172,10 @@ class TFbleYC01 extends IPSModule
 							$this->SetValue("deviceState", $deviceState);
 						}
 
-						array_key_exists('fVersion', $valueData) ? $this->SetValue("fVersion", $valueData["fVersion"]) : 1;
-						array_key_exists('ipAddress', $valueData) ? $this->SetValue("ipAddress", $valueData["ipAddress"]) : 1;
-						array_key_exists('wlanSignal', $valueData) ? $this->SetValue("wlanSignal", $valueData["wlanSignal"]) : 1;
-						array_key_exists('uptime', $valueData) ? $this->SetValue("uptime", $valueData["uptime"]) : 1;
+						#array_key_exists('fVersion', $valueData) ? $this->SetValue("fVersion", $valueData["fVersion"]) : 1;
+						#array_key_exists('ipAddress', $valueData) ? $this->SetValue("ipAddress", $valueData["ipAddress"]) : 1;
+						#array_key_exists('wlanSignal', $valueData) ? $this->SetValue("wlanSignal", $valueData["wlanSignal"]) : 1;
+						#array_key_exists('uptime', $valueData) ? $this->SetValue("uptime", $valueData["uptime"]) : 1;
 					break;
 					// BLE-YC01 Data
 					case "bleYcValues" :
@@ -206,11 +208,12 @@ class TFbleYC01 extends IPSModule
 	
 	public function SendCMD(string $command, string $value)
 	{
+		$deviceTopic				= $this->ReadPropertyString("deviceTopic");
 		$data['DataID'] 			= '{043EA491-0325-4ADD-8FC2-A30C8EEB4D3F}';
         $data['PacketType'] 		= 3;
         $data['QualityOfService'] 	= 0;
         $data['Retain'] 			= false;
-		$data['Topic'] 				= "tfblegw/cmnd/".$command;
+		$data['Topic'] 				= $deviceTopic.'/cmnd/'.$command;
         $data['Payload'] 			= strval($value);
         $dataJSON 					= json_encode($data,JSON_UNESCAPED_SLASHES);
         $this->SendDataToParent($dataJSON);

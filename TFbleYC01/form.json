@@ -1,6 +1,7 @@
 {
 	"elements":
 	[
+		{ "type": "ValidationTextBox", "name": "deviceTopic", "value": "tfblegw", "caption": "Topic" }
 	],
 	"actions":
 	[
