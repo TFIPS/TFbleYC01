@@ -153,7 +153,34 @@ class TFbleYC01 extends IPSModule
 			
 			if($topic[0] == $deviceTopic)
 			{
-				$valueData = json_decode($data["Payload"], true);
+				$cloudData = json_decode($data["Payload"], true);
+				switch($topic[1])
+				{
+					case "bleYcData":
+						$this->SendDebug("bleYcData", $data["Payload"], 0);
+						$bleYcData = json_decode($data["Payload"], true);
+
+						array_key_exists('ec', $bleYcData) ? $this->SetValue("ec", $bleYcData["ec"]) : 1;
+						array_key_exists('tds', $bleYcData) ? $this->SetValue("tds", $bleYcData["tds"]) : 1;
+						array_key_exists('ph', $bleYcData) ? $this->SetValue("ph", $bleYcData["ph"]) : 1;
+						array_key_exists('orp', $bleYcData) ? $this->SetValue("orp", $bleYcData["orp"]) : 1;
+						array_key_exists('cl', $bleYcData) ? $this->SetValue("cl", $bleYcData["cl"]) : 1;
+						array_key_exists('temp', $bleYcData) ? $this->SetValue("temp", $bleYcData["temp"]) : 1;
+						array_key_exists('battery', $bleYcData) ? $this->SetValue("battery", $bleYcData["battery"]) : 1;
+						array_key_exists('holdReading', $bleYcData) ? $this->SetValue("holdReading", $bleYcData["holdReading"]) : 1;
+						array_key_exists('backlight', $bleYcData) ? $this->SetValue("backlight", $bleYcData["backlight"]) : 1;
+						$this->SetValue("lastData", time());
+					break;
+					case "ioData" :
+						$this->SendDebug("ioData", $data["Payload"], 0);
+						$ioData = json_decode($data["Payload"], true);
+						array_key_exists('id', $ioData) ? $this->SetValue("io".$ioData["id"], $ioData["value"]) : 1;
+					break;
+
+				}
+				/*
+				$cloudData = json_decode($data["Payload"], true);
+				
 				switch($topic[1])
 				{
 					// STATE
@@ -202,6 +229,7 @@ class TFbleYC01 extends IPSModule
 						array_key_exists('id', $valueData) ? $this->SetValue("io".$valueData["id"], $valueData["value"]) : 1;
 					break;
 				}
+				*/
 			}
 		}        
     }
